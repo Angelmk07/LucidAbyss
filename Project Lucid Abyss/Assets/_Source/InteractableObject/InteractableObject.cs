@@ -26,6 +26,20 @@ public class InteractableObject : MonoBehaviour
             UpdateColor();
     }
 
+    //public void GetAnomalyInfo(AnomalySO anomalySO)
+    //{
+    //    anomalyData = anomalySO;
+    //    if (anomalyData != null)
+    //    {
+    //        _model.Initialize(
+    //             anomalySO.CounterForce,
+    //             anomalyData.NeedPowerMoreThan,
+    //             anomalyData.TimeToScretch
+    //        );
+    //        isGameActive = true;
+    //    }
+    //}
+
     private void UpdateColor()
     {
         if (spriteRenderer != null)

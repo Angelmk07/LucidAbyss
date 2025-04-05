@@ -24,7 +24,6 @@ public class InteractionSystem : MonoBehaviour
 
     private void Awake()
     {
-        // Инициализация UI
         interactionPanel.SetActive(false);
 
         if (interactionPrompt != null)
@@ -38,7 +37,6 @@ public class InteractionSystem : MonoBehaviour
             promptCanvasGroup.alpha = 0;
         }
 
-        // Настройка кнопок
         yesButton.onClick.AddListener(OnYesClicked);
         noButton.onClick.AddListener(OnNoClicked);
     }
@@ -49,13 +47,13 @@ public class InteractionSystem : MonoBehaviour
         UpdateInteractionPrompt();
     }
 
+    //Метод для создание области проверки на объект
     private void CheckNearbyObjects()
     {
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, interactionRange, interactableLayer);
         hasNearbyObject = false;
         currentNearbyObject = null;
 
-        // Находим ближайший доступный объект
         foreach (var collider in hitColliders)
         {
             var obj = collider.GetComponent<InteractableObject>();
@@ -63,11 +61,12 @@ public class InteractionSystem : MonoBehaviour
             {
                 hasNearbyObject = true;
                 currentNearbyObject = obj;
-                break; // Берем первый попавшийся объект
+                break;
             }
         }
     }
 
+    //Метод для создание анимации появления/исчезновения текста
     private void UpdateInteractionPrompt()
     {
         if (interactionPrompt == null) return;
@@ -82,7 +81,6 @@ public class InteractionSystem : MonoBehaviour
                 interactionPrompt.SetActive(true);
             }
 
-            // Обновляем текст и позицию
             interactionPromptText.text = $"Нажмите {KeyCode.E} чтобы взаимодействовать";
             UpdatePromptPosition();
         }
@@ -92,6 +90,7 @@ public class InteractionSystem : MonoBehaviour
         }
     }
 
+    //Метод для установления позии текста
     private void UpdatePromptPosition()
     {
         if (Camera.main != null)
@@ -101,6 +100,7 @@ public class InteractionSystem : MonoBehaviour
         }
     }
 
+    //Метод для вызова экрана пройгрыша
     public void TryInteract()
     {
         if (hasNearbyObject && currentNearbyObject != null && !currentNearbyObject.WasCollected)
@@ -109,16 +109,15 @@ public class InteractionSystem : MonoBehaviour
         }
     }
 
+    //Метод для показа текста с названием аномалии
     private void ShowInteractionDialog(InteractableObject obj)
     {
         currentNearbyObject = obj;
         questionText.text = $"Вы хотите взять этот предмет? (Аномалия: {(obj.IsAnomaly ? "Да" : "Нет")})";
         interactionPanel.SetActive(true);
 
-        // Останавливаем время
         Time.timeScale = 0f;
 
-        // Делаем кнопки снова интерактивными (на случай повторного открытия)
         yesButton.interactable = true;
         noButton.interactable = true;
     }
@@ -140,61 +139,7 @@ public class InteractionSystem : MonoBehaviour
     private void CloseInteractionDialog()
     {
         interactionPanel.SetActive(false);
-        // Восстанавливаем время
         Time.timeScale = 1f;
-        // Намеренно не очищаем currentNearbyObject, чтобы можно было снова открыть диалог
-    }
-
-    public void CheckLevelCompletion()
-    {
-        InteractableObject[] allObjects = FindObjectsOfType<InteractableObject>(includeInactive: true);
-        bool allAnomaliesCollected = true;
-        bool hasNormalObjects = false;
-        bool collectedNormalObject = false;
-
-        foreach (var obj in allObjects)
-        {
-            if (obj.IsAnomaly && !obj.WasCollected)
-            {
-                allAnomaliesCollected = false;
-            }
-
-            if (!obj.IsAnomaly)
-            {
-                hasNormalObjects = true;
-                if (obj.WasCollected)
-                {
-                    collectedNormalObject = true;
-                }
-            }
-        }
-
-        // Логика завершения уровня
-        if (allAnomaliesCollected && !collectedNormalObject)
-        {
-            Debug.Log("Уровень пройден! Все аномалии собраны.");
-            RestartLevel();
-        }
-        else
-        {
-            Debug.Log("Вы проиграли! " +
-                     (collectedNormalObject ? "Был собран нормальный объект." : "Не все аномалии собраны."));
-            GameOver();
-        }
-    }
-
-    private void RestartLevel()
-    {
-        // Перезагрузка текущей сцены
-        UnityEngine.SceneManagement.SceneManager.LoadScene(
-            UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
-    }
-
-    private void GameOver()
-    {
-        // Здесь можно добавить логику завершения игры
-        // Например, показать экран проигрыша
-        Debug.Log("Game Over!");
     }
 
     private void OnDrawGizmosSelected()
