@@ -33,6 +33,29 @@ MonoBehaviour:
       correct sequence before the timer runs out.
     m_Metadata:
       m_Items: []
+  - m_Id: 34976466022400
+    m_Localized: Where am I? What's wrong with me? Is this a dream?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35016697786368
+    m_Localized: This is some kind of nonsense! I don't understand whether I'm sleeping
+      or not.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35030828396544
+    m_Localized: Now everything looks better, but... Is this a dream again? Or am
+      I not sleeping anymore?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35044346638336
+    m_Localized: This time it can't be a dream! This is beyond the pale.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35054178086912
+    m_Localized: I don't understand anything anymore, where is a dream and where
+      is reality.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

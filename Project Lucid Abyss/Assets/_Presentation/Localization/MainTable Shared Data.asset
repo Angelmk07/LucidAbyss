@@ -27,6 +27,26 @@ MonoBehaviour:
     m_Key: RedCirclesMiniGameTutorial
     m_Metadata:
       m_Items: []
+  - m_Id: 34976466022400
+    m_Key: Phrase1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35016697786368
+    m_Key: Phrase2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35030828396544
+    m_Key: Phrase3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35044346638336
+    m_Key: Phrase4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35054178086912
+    m_Key: Phrase5
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
