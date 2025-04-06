@@ -6,6 +6,7 @@ using DG.Tweening;
 public class GameTimer : MonoBehaviour
 {
     [SerializeField] private float duration = 0.2f;
+    [SerializeField] private float fouldCost = 5;
     [SerializeField] private Image image;
     [Header("Shake Settings")]
     [SerializeField] private ShakeData[] shakeStages;
@@ -37,6 +38,10 @@ public class GameTimer : MonoBehaviour
                 image.color = shakeStages[i].color;
             }
         }
+    }
+    public void AddFouldCost()
+    {
+        _slider.value += fouldCost;
     }
 
     private void TryShake(ShakeData shakeData)
