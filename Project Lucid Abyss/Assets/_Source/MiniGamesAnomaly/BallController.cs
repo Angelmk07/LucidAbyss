@@ -47,10 +47,7 @@ public class BallController : MonoBehaviour
     private void WinGame()
     {
         gameWon = true;
-        resultText.text = "ПОБЕДА!";
-        resultText.color = Color.yellow;
-        resultText.gameObject.SetActive(true);
-        gamePanel.SetActive(true);
+        transform.parent.gameObject.SetActive(false);
 
         Debug.Log("Игрок провел шарик к цели!");
     }
