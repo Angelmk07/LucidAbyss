@@ -5,6 +5,7 @@ public class InputListener : MonoBehaviour
 {
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private InteractionSystem interactionSystem;
+    [SerializeField] private Animator animator;
     public static Action<bool> CanDo;
 
     private bool _canWalk = true;
@@ -37,6 +38,7 @@ public class InputListener : MonoBehaviour
         if (_canWalk)
         {
             horizontalInput = Input.GetAxisRaw("Horizontal");
+            
 
             if (Input.GetKeyDown(KeyCode.E))
             {
@@ -51,6 +53,11 @@ public class InputListener : MonoBehaviour
 
     private void FixedUpdate()
     {
+        animator.SetFloat("Speed", horizontalInput);
+        Debug.Log(horizontalInput != 0);
+        animator.SetBool("Move", horizontalInput != 0);
+        Debug.Log(horizontalInput != 0);
         playerMovement.Move(horizontalInput);
+
     }
 }
