@@ -12,10 +12,7 @@ public class BallSpawner : MonoBehaviour
 
     private int _nextExpectedNumber = 0;
     public event System.Action<bool> OnMinigameEnded;
-    private void Start()
-    {
-        StartGame();
-    }
+
     public void StartGame()
     {
         

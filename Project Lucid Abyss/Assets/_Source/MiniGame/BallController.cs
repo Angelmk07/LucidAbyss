@@ -6,16 +6,7 @@ public class BallController : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private bool gravityEnabled = false;
 
-    [Header("UI")]
-    public TMP_Text resultText; // Текст результата
-    public GameObject gamePanel; // Панель игры
-
     private bool gameWon;
-
-    private void Awake()
-    {
-        gamePanel.SetActive(false);
-    }
 
     void Update()
     {
@@ -46,11 +37,7 @@ public class BallController : MonoBehaviour
 
     private void WinGame()
     {
-        gameWon = true;
-        resultText.text = "ПОБЕДА!";
-        resultText.color = Color.yellow;
-        resultText.gameObject.SetActive(true);
-        gamePanel.SetActive(true);
+        transform.parent.gameObject.SetActive(false);
 
         Debug.Log("Игрок провел шарик к цели!");
     }

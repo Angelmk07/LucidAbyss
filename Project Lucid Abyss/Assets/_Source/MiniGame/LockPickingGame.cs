@@ -41,6 +41,7 @@ public class LockPickingGame : MonoBehaviour
         if (isInCorrectZone && Input.GetKeyDown(KeyCode.Space))
         {
             isSolved = true;
+            gameObject.SetActive(false);
             Debug.Log("Замок взломан! Угол: " + currentRotation.ToString("0.0") + "°");
         }
 
