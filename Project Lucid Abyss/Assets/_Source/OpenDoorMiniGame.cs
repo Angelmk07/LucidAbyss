@@ -30,7 +30,7 @@ public class OpenDoorMiniGame : MonoBehaviour
             {
                 miniGames[i].SetActive(false);
             }
-            SpawnRandomMiniGame();
+            Destroy(gameObject);
         }
     }
 
