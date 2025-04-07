@@ -14,18 +14,18 @@ public class LockPickingGame : MonoBehaviour
     private float currentRotation = 0f;
     private bool isInCorrectZone = false;
     private bool isSolved = false;
+    private bool isActive = false;
+
+    public System.Action<bool> OnGameEnd;
 
     private void Start()
     {
-        if (correctRotation == 0f)
-        {
-            correctRotation = Random.Range(30f, 330f);
-        }
+        StartMiniGame();
     }
 
     private void Update()
     {
-        if (isSolved) return;
+        if (!isActive || isSolved) return;
 
         currentRotation += rotationSpeed * rotationDirection * Time.deltaTime;
         currentRotation = Mathf.Repeat(currentRotation, 360f);
@@ -38,15 +38,48 @@ public class LockPickingGame : MonoBehaviour
         float angleDifference = Mathf.Abs(Mathf.DeltaAngle(currentRotation, correctRotation));
         isInCorrectZone = (angleDifference <= snapThreshold);
 
-        if (isInCorrectZone && Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            isSolved = true;
-            Debug.Log("Замок взломан! Угол: " + currentRotation.ToString("0.0") + "°");
+            if (isInCorrectZone)
+            {
+                Debug.Log("Замок взломан! Угол: " + currentRotation.ToString("0.0") + "°");
+                EndGame(true);
+            }
+            else
+            {
+                Debug.Log("Ошибка! Угол: " + currentRotation.ToString("0.0") + "°");
+                EndGame(false);
+            }
         }
+    }
 
-        if (!isInCorrectZone && Input.GetKeyDown(KeyCode.Space))
+    public void StartMiniGame()
+    {
+        isSolved = false;
+        isActive = true;
+        gameObject.SetActive(true);
+        currentRotation = 0f;
+
+        if (lockTransform != null)
         {
-            rotationDirection *= -1;
+            lockTransform.localEulerAngles = Vector3.zero;
         }
+    }
+
+    private void EndGame(bool success)
+    {
+        isSolved = true;
+        isActive = false;
+        gameObject.SetActive(false);
+        OnGameEnd?.Invoke(success);
+    }
+
+    public void ResetGame()
+    {
+        isSolved = false;
+        isActive = false;
+        currentRotation = 0f;
+        lockTransform.localEulerAngles = Vector3.zero;
+        gameObject.SetActive(false);
     }
 }

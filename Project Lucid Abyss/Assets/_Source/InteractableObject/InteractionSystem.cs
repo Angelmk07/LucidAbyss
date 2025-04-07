@@ -4,11 +4,16 @@ using TMPro;
 
 public class InteractionSystem : MonoBehaviour
 {
+    [Header("MiniGames")]
+    [SerializeField] private GameObject tugPanel;
+    [SerializeField] private GameObject ballSubsequence;
+    [SerializeField] private GameObject skillCheck;
+    [SerializeField] private GameObject MiniGamesBackGround;
     [Header("UI References")]
-    [SerializeField] private GameObject interactionPanel;
-    [SerializeField] private TMP_Text questionText;
-    [SerializeField] private Button yesButton;
-    [SerializeField] private Button noButton;
+
+    //[SerializeField] private TMP_Text questionText;
+    //[SerializeField] private Button yesButton;
+    //[SerializeField] private Button noButton;
     [SerializeField] private GameObject interactionPrompt;
     [SerializeField] private TMP_Text interactionPromptText;
 
@@ -22,11 +27,13 @@ public class InteractionSystem : MonoBehaviour
     private bool hasNearbyObject = false;
     private CanvasGroup promptCanvasGroup;
     private ScretchController _scretchController;
+    private BallSpawner _ballSpawner;
+    private LockPickingGame _lockPicking;
     private GameTimer _gameTimer;
 
     private void Awake()
     {
-        interactionPanel.SetActive(false);
+        tugPanel.SetActive(false);
 
         if (interactionPrompt != null)
         {
@@ -49,10 +56,12 @@ public class InteractionSystem : MonoBehaviour
         UpdateInteractionPrompt();
     }
 
-    public void Constructor(ScretchController scretchController, GameTimer gameTimer)
+    public void Constructor(ScretchController scretchController, GameTimer gameTimer,BallSpawner ballSpawner, LockPickingGame lockPicking)
     {
         _scretchController = scretchController;
         _gameTimer = gameTimer;
+        _ballSpawner = ballSpawner;
+        _lockPicking = lockPicking;
     }
 
     //Метод для создание области проверки на объект
@@ -79,7 +88,7 @@ public class InteractionSystem : MonoBehaviour
     {
         if (interactionPrompt == null) return;
 
-        float targetAlpha = (hasNearbyObject && !interactionPanel.activeSelf) ? 1f : 0f;
+        float targetAlpha = (hasNearbyObject && !tugPanel.activeSelf) ? 1f : 0f;
         promptCanvasGroup.alpha = Mathf.Lerp(promptCanvasGroup.alpha, targetAlpha, fadeSpeed * Time.deltaTime);
 
         if (promptCanvasGroup.alpha > 0.01f)
@@ -113,21 +122,74 @@ public class InteractionSystem : MonoBehaviour
     {
         if (hasNearbyObject && currentNearbyObject != null && !currentNearbyObject.WasCollected)
         {
-            ShowInteractionDialog(currentNearbyObject);
+            StartMiniGame(currentNearbyObject);
+        }
+    }
+    private void StartMiniGame(InteractableObject obj)
+    {
+        MiniGameType gameType = (MiniGameType)Random.Range(0, 3); 
+
+        switch (gameType)
+        {
+            case MiniGameType.Tug:
+                StartUIMiniGame(obj);
+                break;
+            case MiniGameType.Skillcheck:
+                StartWorldMiniGame1(obj);
+                break;
+            case MiniGameType.Subsequence:
+                StartWorldMiniGame2(obj);
+                break;
         }
     }
 
-    //Метод для показа текста с названием аномалии
-    private void ShowInteractionDialog(InteractableObject obj)
+    private void StartWorldMiniGame2(InteractableObject obj)
     {
-        interactionPanel.SetActive(true);
+        ballSubsequence.SetActive(true);
+        MiniGamesBackGround.SetActive(true);
+        _ballSpawner.OnMinigameEnded += (bool result) =>
+        {
+            if (result)
+            {
+                MiniGamesBackGround.SetActive(false);
+                currentNearbyObject?.Collect();
+            }
+        };
+        if (!obj.IsAnomaly)
+        {
+            _gameTimer.AddFouldCost();
+        }
+    }
+
+    private void StartWorldMiniGame1(InteractableObject obj)
+    {
+        skillCheck.SetActive(true);
+        MiniGamesBackGround.SetActive(true);
+        _lockPicking.OnGameEnd += (bool result) =>
+        {
+            if (result)
+            {
+                MiniGamesBackGround.SetActive(false);
+                currentNearbyObject?.Collect();
+            }
+        };
+        if (!obj.IsAnomaly)
+        {
+            _gameTimer.AddFouldCost();
+        }
+    }
+
+    private void StartUIMiniGame(InteractableObject obj)
+    {
+
+        tugPanel.SetActive(true);
         currentNearbyObject = obj;
         _scretchController.GetAnomalyInfo(obj.AnomalyInfo);
         _scretchController.onGameEnd += (bool result) =>
         {
             if (result)
             {
-                interactionPanel.SetActive(false);
+                tugPanel.SetActive(false);
                 currentNearbyObject?.Collect();
             }
         };
@@ -154,7 +216,7 @@ public class InteractionSystem : MonoBehaviour
 
     private void CloseInteractionDialog()
     {
-        interactionPanel.SetActive(false);
+        tugPanel .SetActive(false);
         Time.timeScale = 1f;
     }
 
@@ -163,4 +225,10 @@ public class InteractionSystem : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, interactionRange);
     }
+}
+public enum MiniGameType
+{
+    Tug,
+    Skillcheck,
+    Subsequence
 }
