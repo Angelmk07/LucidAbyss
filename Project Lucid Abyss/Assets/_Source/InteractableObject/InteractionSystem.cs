@@ -21,6 +21,8 @@ public class InteractionSystem : MonoBehaviour
     private InteractableObject currentNearbyObject;
     private bool hasNearbyObject = false;
     private CanvasGroup promptCanvasGroup;
+    private ScretchController _scretchController;
+    private GameTimer _gameTimer;
 
     private void Awake()
     {
@@ -37,14 +39,20 @@ public class InteractionSystem : MonoBehaviour
             promptCanvasGroup.alpha = 0;
         }
 
-        yesButton.onClick.AddListener(OnYesClicked);
-        noButton.onClick.AddListener(OnNoClicked);
+        //yesButton.onClick.AddListener(OnYesClicked);
+        //noButton.onClick.AddListener(OnNoClicked);
     }
 
     private void Update()
     {
         CheckNearbyObjects();
         UpdateInteractionPrompt();
+    }
+
+    public void Constructor(ScretchController scretchController, GameTimer gameTimer)
+    {
+        _scretchController = scretchController;
+        _gameTimer = gameTimer;
     }
 
     //Метод для создание области проверки на объект
@@ -112,14 +120,22 @@ public class InteractionSystem : MonoBehaviour
     //Метод для показа текста с названием аномалии
     private void ShowInteractionDialog(InteractableObject obj)
     {
-        currentNearbyObject = obj;
-        questionText.text = $"Вы хотите взять этот предмет? (Аномалия: {(obj.IsAnomaly ? "Да" : "Нет")})";
         interactionPanel.SetActive(true);
+        currentNearbyObject = obj;
+        _scretchController.GetAnomalyInfo(obj.AnomalyInfo);
+        _scretchController.onGameEnd += (bool result) =>
+        {
+            if (result)
+            {
+                interactionPanel.SetActive(false);
+                currentNearbyObject?.Collect();
+            }
+        };
+        if (!obj.IsAnomaly)
+        {
+            _gameTimer.AddFouldCost();
+        }
 
-        Time.timeScale = 0f;
-
-        yesButton.interactable = true;
-        noButton.interactable = true;
     }
 
     private void OnYesClicked()

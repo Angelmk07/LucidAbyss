@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class InteractableObject : MonoBehaviour
 {
+    [field:SerializeField] public AnomalySO AnomalyInfo { get; private set; }
     [SerializeField] private bool isAnomaly = false;
     [SerializeField] private Color normalColor = Color.white;
     [SerializeField] private Color anomalyColor = Color.red;
-
     private SpriteRenderer spriteRenderer;
 
     public bool IsAnomaly => isAnomaly;
@@ -26,19 +26,7 @@ public class InteractableObject : MonoBehaviour
             UpdateColor();
     }
 
-    //public void GetAnomalyInfo(AnomalySO anomalySO)
-    //{
-    //    anomalyData = anomalySO;
-    //    if (anomalyData != null)
-    //    {
-    //        _model.Initialize(
-    //             anomalySO.CounterForce,
-    //             anomalyData.NeedPowerMoreThan,
-    //             anomalyData.TimeToScretch
-    //        );
-    //        isGameActive = true;
-    //    }
-    //}
+   
 
     private void UpdateColor()
     {

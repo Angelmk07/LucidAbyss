@@ -8,36 +8,51 @@ public class ScretchController : MonoBehaviour
     private AnomalySO anomalyData;
     private ScretchView _view;
     private ScretchModel _model;
-    private bool isGameActive = false;
-    private void Awake()
+    [SerializeField]private bool isGameActive = false;
+    public System.Action<bool> onGameEnd;
+
+    public void StartMiniGame(System.Action<bool> onComplete)
     {
-        _view = GetComponent<ScretchView>();
-        _model = new ScretchModel();
+        isGameActive = true;
 
-
+        this.onGameEnd = onComplete;
     }
     public void GetAnomalyInfo(AnomalySO anomalySO)
     {
-        anomalyData = anomalySO;
-        if (anomalyData != null)
+        if(_view == null || _model == null)
         {
+            _view = GetComponent<ScretchView>();
+            _model = new ScretchModel();
+        }
+        if (anomalySO != null)
+        {
+            anomalyData = anomalySO;
             _model.Initialize(
-                 anomalySO.CounterForce,
+                 anomalyData.CounterForce,
                  anomalyData.NeedPowerMoreThan,
                  anomalyData.TimeToScretch
             ) ;
             isGameActive = true;
+            StartMiniGame(onGameEnd);
+
+        }
+        else
+        {
+            Debug.LogError("wtf");
         }
     }
 
     private void Update()
     {
+        Debug.Log("Update");
         if (!isGameActive)
             return;
+        Debug.Log("Update then");
         if (Input.GetKeyDown(key))
         {
             _view.SliderValue += Scretchpower;
         }
+
         _view.SliderValue -= _model.CounterForce * Time.deltaTime;
 
         float percent = (_view.SliderValue / _view.MaxValue) * 100f;
@@ -47,17 +62,12 @@ public class ScretchController : MonoBehaviour
         if (_model.IsHolding)
         {
             _view.SetSuccessVisual();
-            _view.SetTimerText(_model.HoldTime - _model.Timer);
+            _view.SetTimerText(_model.TimeLeft);
 
             if (_model.IsCompleted)
             {
                 OnSuccess();
-                _model.Reset();
-            }
-            else
-            {
-                OnUnSuccess();
-                _model.Reset();
+                Reset();
             }
         }
         else
@@ -65,13 +75,29 @@ public class ScretchController : MonoBehaviour
             _view.SetUnSuccessVisual();
             _view.SetTimerText(_model.HoldTime);
         }
+
+        if (!_model.IsHolding && _model.Timer > 0)
+        {
+            OnUnSuccess();
+            Reset();
+
+        }
+    }
+    private void Reset()
+    {
+        isGameActive = false;
+        _model.Reset();
+        _view.Reset();
     }
 
     private void OnSuccess()
     {
+        onGameEnd?.Invoke(true);
     }
 
     private void OnUnSuccess()
     {
+        onGameEnd?.Invoke(false);
     }
+
 }

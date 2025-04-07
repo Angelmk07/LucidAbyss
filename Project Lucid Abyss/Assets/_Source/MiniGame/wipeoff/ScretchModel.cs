@@ -10,6 +10,7 @@ public class ScretchModel
     public bool IsHolding { get; private set; }
 
     public bool IsCompleted => Timer >= HoldTime;
+    public float TimeLeft => Mathf.Max(HoldTime - Timer, 0f);
 
     public void Initialize(float counterForce, float needMoreThan, float holdTime)
     {

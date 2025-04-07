@@ -32,4 +32,10 @@ public class ScretchView : MonoBehaviour
     {
         timerText.text = timeLeft.ToString("F1");
     }
+    public  void Reset()
+    {
+        slider.value = slider.minValue;
+        image.color = unSuccessColor;
+        timerText.text = "Timer";
+    }
 }
