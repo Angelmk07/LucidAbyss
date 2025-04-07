@@ -50,7 +50,7 @@ public class BalanceSystem : MonoBehaviour
        if( distance < maxDistance)
         {
             _stayTimer += Time.deltaTime;
-                text.text = $"{_stayTimer}";
+                text.text = $"{(int)_stayTimer}";
             if (_stayTimer >= needTostayTime)
             {
                 isWin = true;
