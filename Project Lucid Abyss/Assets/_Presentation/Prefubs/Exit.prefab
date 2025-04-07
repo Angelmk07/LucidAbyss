@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1054780224913777074}
   - component: {fileID: 2619214470108719312}
   - component: {fileID: 7312676601512259507}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Exit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -150,3 +150,4 @@ MonoBehaviour:
   player: {fileID: 0}
   minigame: {fileID: 0}
   camera: {fileID: 0}
+  activationDistance: 2

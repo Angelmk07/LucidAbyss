@@ -80,6 +80,13 @@ public class InteractionSystem : MonoBehaviour
                 currentNearbyObject = obj;
                 break;
             }
+            var obj2 = collider.GetComponent<OpenDoorMiniGame>();
+            if (obj2 != null)
+            {
+                hasNearbyObject = true;
+                currentNearbyObject = obj;
+                break;
+            }
         }
     }
 

@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 
@@ -6,17 +5,15 @@ public class BallController : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private bool gravityEnabled = false;
-
-    [Header("UI")]
-    public TMP_Text resultText; // Текст результата
-    //public GameObject gamePanel; // Панель игры
-
+    private OpenDoorMiniGame miniGameController;
     private bool gameWon;
+    private Camera mainCamera;
 
-    //private void Awake()
-    //{
-    //    gamePanel.SetActive(false);
-    //}
+    void Start()
+    {
+        mainCamera = Camera.main;
+        miniGameController = FindObjectOfType<OpenDoorMiniGame>();
+    }
 
     void Update()
     {
@@ -30,13 +27,19 @@ public class BallController : MonoBehaviour
                 rb.velocity = Vector2.zero;
             }
         }
+
+        if (!IsVisibleOnScreen() && !gameWon)
+        {
+            miniGameController?.DeactivateMiniGame();
+        }
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Death"))
         {
-            LostGame();
+            Debug.Log("You Died!");
+            miniGameController?.DeactivateMiniGame();
         }
 
         if (collision.gameObject.CompareTag("Finish"))
@@ -44,24 +47,18 @@ public class BallController : MonoBehaviour
             WinGame();
         }
     }
-    private void OnBecameInvisible()
-    {
-        LostGame();
-    }
-
-    private void LostGame()
-    {
-        gameWon = false;
-        transform.parent.gameObject.SetActive(false);
-        InputListener.CanDo.Invoke(true);
-    }
 
     private void WinGame()
     {
         gameWon = true;
         transform.parent.gameObject.SetActive(false);
-
         Debug.Log("Игрок провел шарик к цели!");
-        InputListener.CanDo.Invoke(true);
+        miniGameController?.DeactivateMiniGame();
+    }
+
+    private bool IsVisibleOnScreen()
+    {
+        Vector3 screenPoint = mainCamera.WorldToViewportPoint(transform.position);
+        return screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
     }
 }
