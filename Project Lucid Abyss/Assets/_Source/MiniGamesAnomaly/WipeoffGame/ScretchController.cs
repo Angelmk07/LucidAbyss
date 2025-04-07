@@ -10,7 +10,7 @@ public class ScretchController : MonoBehaviour
     private ScretchModel _model;
     [SerializeField]private bool isGameActive = false;
     public System.Action<bool> onGameEnd;
-
+    private bool hasEnded = false;
     public void StartMiniGame(System.Action<bool> onComplete)
     {
         isGameActive = true;
@@ -42,6 +42,9 @@ public class ScretchController : MonoBehaviour
         }
     }
 
+
+
+
     private void Update()
     {
         if (!isGameActive)
@@ -56,40 +59,51 @@ public class ScretchController : MonoBehaviour
 
         float percent = (_view.SliderValue / _view.MaxValue) * 100f;
 
-        _model.UpdateHold(percent, Time.deltaTime);
+        _model.TryStartTimer(percent);
+        _model.UpdateTimer(Time.deltaTime);
+        _view.SetTimerText(_model.TimeLeft);
 
-        if (_model.IsHolding)
+        if (_model.IsTimerRunning)
         {
-            _view.SetSuccessVisual();
-            _view.SetTimerText(_model.TimeLeft);
-
-            if (_model.IsCompleted)
+            if (_model.IsCompleted && !hasEnded)
             {
-                OnSuccess();
+                hasEnded = true;
+
+                if (percent > _model.NeedMoreThan)
+                {
+                    _view.SetSuccessVisual();
+                    OnSuccess();
+                }
+                else
+                {
+                    _view.SetUnSuccessVisual();
+                    OnUnSuccess();
+                }
+
                 Reset();
             }
-        }
-        else
-        {
-            _view.SetUnSuccessVisual();
-            _view.SetTimerText(_model.HoldTime);
-        }
-
-        if (!_model.IsHolding && _model.Timer > 0)
-        {
-            OnUnSuccess();
-            Reset();
+            else
+            {
+                if (percent > _model.NeedMoreThan)
+                    _view.SetSuccessVisual();
+                else
+                    _view.SetUnSuccessVisual();
+            }
         }
     }
 
+
+
     private void Reset()
     {
-        if (!isGameActive) return; 
+        if (!isGameActive) return;
         isGameActive = false;
 
         _model.Reset();
         _view.Reset();
+        hasEnded = false;
     }
+
 
 
     private void OnSuccess()

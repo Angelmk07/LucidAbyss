@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Sprite>k__BackingField: {fileID: 0}
   <AnomalySprite>k__BackingField: {fileID: 0}
-  <TimeToScretch>k__BackingField: 0
-  <NeedPowerMoreThan>k__BackingField: 0
-  <CounterForce>k__BackingField: 0
+  <TimeToScretch>k__BackingField: 1
+  <NeedPowerMoreThan>k__BackingField: 1
+  <CounterForce>k__BackingField: 1
   <LvlAccess>k__BackingField: 

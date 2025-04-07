@@ -127,8 +127,7 @@ public class InteractionSystem : MonoBehaviour
     }
     private void StartMiniGame(InteractableObject obj)
     {
-        MiniGameType gameType = (MiniGameType)Random.Range(0, 3); 
-
+        MiniGameType gameType = (MiniGameType)Random.Range(0, 3);
         switch (gameType)
         {
             case MiniGameType.Tug:
@@ -147,36 +146,42 @@ public class InteractionSystem : MonoBehaviour
     {
         ballSubsequence.SetActive(true);
         MiniGamesBackGround.SetActive(true);
+        _ballSpawner.StartGame();
         _ballSpawner.OnMinigameEnded += (bool result) =>
         {
             if (result)
             {
                 MiniGamesBackGround.SetActive(false);
                 currentNearbyObject?.Collect();
+                if (!obj.IsAnomaly)
+                {
+                    _gameTimer.AddFouldCost();
+                }
             }
+            MiniGamesBackGround.SetActive(false);
         };
-        if (!obj.IsAnomaly)
-        {
-            _gameTimer.AddFouldCost();
-        }
+   
     }
 
     private void StartWorldMiniGame1(InteractableObject obj)
     {
         skillCheck.SetActive(true);
         MiniGamesBackGround.SetActive(true);
+        _lockPicking.StartMiniGame();
         _lockPicking.OnGameEnd += (bool result) =>
         {
             if (result)
             {
-                MiniGamesBackGround.SetActive(false);
+
                 currentNearbyObject?.Collect();
+                if (!obj.IsAnomaly)
+                {
+                    _gameTimer.AddFouldCost();
+                }
             }
+            MiniGamesBackGround.SetActive(false);
         };
-        if (!obj.IsAnomaly)
-        {
-            _gameTimer.AddFouldCost();
-        }
+
     }
 
     private void StartUIMiniGame(InteractableObject obj)
@@ -189,14 +194,16 @@ public class InteractionSystem : MonoBehaviour
         {
             if (result)
             {
-                tugPanel.SetActive(false);
+               
                 currentNearbyObject?.Collect();
+                if (!obj.IsAnomaly)
+                {
+                    _gameTimer.AddFouldCost();
+                }
             }
+            tugPanel.SetActive(false);
         };
-        if (!obj.IsAnomaly)
-        {
-            _gameTimer.AddFouldCost();
-        }
+
 
     }
 

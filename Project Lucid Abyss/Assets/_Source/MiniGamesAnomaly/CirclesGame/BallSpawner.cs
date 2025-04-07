@@ -18,17 +18,12 @@ public class BallSpawner : MonoBehaviour
     }
     public void StartGame()
     {
-        
-        if (container.Count == 0)
-        {
-            container = new();
-            CreateMinigame();
-        }
-        else
-        {
-            Restart();
-        }
+        ClearBalls();
+        CreateMinigame();
+        Debug.Log("create");
     }
+
+
     public void CreateMinigame()
     {
         List<Vector3> usedPositions = new();
@@ -36,7 +31,7 @@ public class BallSpawner : MonoBehaviour
         {
             Vector3 spawnPos;
             int attempts = 0;
-
+            Debug.Log("create ex");
             do
             {
                 spawnPos = new Vector3(
@@ -90,11 +85,11 @@ public class BallSpawner : MonoBehaviour
     }
     public void EndMinigame(bool success)
     {
-        foreach (Ball ball in container)
-        {
-            ball.Off();
-        }
-
+        //foreach (Ball ball in container)
+        //{
+        //    ball.Off();
+        //}
+        ClearBalls();
         OnMinigameEnded?.Invoke(success);
     }
 

@@ -18,10 +18,7 @@ public class LockPickingGame : MonoBehaviour
 
     public System.Action<bool> OnGameEnd;
 
-    private void Start()
-    {
-        StartMiniGame();
-    }
+
 
     private void Update()
     {
@@ -68,6 +65,7 @@ public class LockPickingGame : MonoBehaviour
 
     private void EndGame(bool success)
     {
+        ResetGame();
         isSolved = true;
         isActive = false;
         gameObject.SetActive(false);
@@ -76,8 +74,6 @@ public class LockPickingGame : MonoBehaviour
 
     public void ResetGame()
     {
-        isSolved = false;
-        isActive = false;
         currentRotation = 0f;
         lockTransform.localEulerAngles = Vector3.zero;
         gameObject.SetActive(false);
