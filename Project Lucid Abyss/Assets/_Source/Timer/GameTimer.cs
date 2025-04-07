@@ -13,6 +13,7 @@ public class GameTimer : MonoBehaviour
     private Vector3 _initialPosition;
     private Slider _slider;
     private float _lastShakeTime;
+    private bool isStop;
 
     private void Awake()
     {
@@ -23,7 +24,7 @@ public class GameTimer : MonoBehaviour
 
     private void Update()
     {
-        _slider.value += Time.deltaTime;
+        _slider.value += isStop ? 0 : Time.deltaTime;
         float currentPercent = (_slider.value / _slider.maxValue) * 100f;
 
         for (int i = shakeStages.Length - 1; i >= 0; i--)
@@ -55,6 +56,12 @@ public class GameTimer : MonoBehaviour
             _lastShakeTime = Time.time;
         }
     }
+
+    public void Stop() =>
+        isStop = true;
+
+    public void Continue() =>
+        isStop = false;
 }
 
 [System.Serializable]
