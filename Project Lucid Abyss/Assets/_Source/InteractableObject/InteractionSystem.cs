@@ -128,6 +128,7 @@ public class InteractionSystem : MonoBehaviour
     private void StartMiniGame(InteractableObject obj)
     {
         MiniGameType gameType = (MiniGameType)Random.Range(0, 3);
+        InputListener.CanDo?.Invoke(false);
         switch (gameType)
         {
             case MiniGameType.Tug:
@@ -159,6 +160,7 @@ public class InteractionSystem : MonoBehaviour
                 }
             }
             MiniGamesBackGround.SetActive(false);
+            InputListener.CanDo?.Invoke(true);
         };
    
     }
@@ -180,6 +182,7 @@ public class InteractionSystem : MonoBehaviour
                 }
             }
             MiniGamesBackGround.SetActive(false);
+            InputListener.CanDo?.Invoke(true);
         };
 
     }
@@ -202,6 +205,7 @@ public class InteractionSystem : MonoBehaviour
                 }
             }
             tugPanel.SetActive(false);
+            InputListener.CanDo?.Invoke(true);
         };
 
 

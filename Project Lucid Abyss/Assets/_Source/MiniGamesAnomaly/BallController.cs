@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -8,14 +9,14 @@ public class BallController : MonoBehaviour
 
     [Header("UI")]
     public TMP_Text resultText; // Текст результата
-    public GameObject gamePanel; // Панель игры
+    //public GameObject gamePanel; // Панель игры
 
     private bool gameWon;
 
-    private void Awake()
-    {
-        gamePanel.SetActive(false);
-    }
+    //private void Awake()
+    //{
+    //    gamePanel.SetActive(false);
+    //}
 
     void Update()
     {
@@ -35,13 +36,24 @@ public class BallController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Death"))
         {
-            Debug.Log("You Died!");
+            LostGame();
         }
 
         if (collision.gameObject.CompareTag("Finish"))
         {
             WinGame();
         }
+    }
+    private void OnBecameInvisible()
+    {
+        LostGame();
+    }
+
+    private void LostGame()
+    {
+        gameWon = false;
+        transform.parent.gameObject.SetActive(false);
+        InputListener.CanDo.Invoke(true);
     }
 
     private void WinGame()
@@ -50,5 +62,6 @@ public class BallController : MonoBehaviour
         transform.parent.gameObject.SetActive(false);
 
         Debug.Log("Игрок провел шарик к цели!");
+        InputListener.CanDo.Invoke(true);
     }
 }

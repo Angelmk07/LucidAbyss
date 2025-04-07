@@ -10,9 +10,11 @@ public class GameTimer : MonoBehaviour
     [SerializeField] private Image image;
     [Header("Shake Settings")]
     [SerializeField] private ShakeData[] shakeStages;
+
     private Vector3 _initialPosition;
     private Slider _slider;
     private float _lastShakeTime;
+    private bool _isPaused = false;
 
     private void Awake()
     {
@@ -23,6 +25,8 @@ public class GameTimer : MonoBehaviour
 
     private void Update()
     {
+        if (_isPaused) return;
+
         _slider.value += Time.deltaTime;
         float currentPercent = (_slider.value / _slider.maxValue) * 100f;
 
@@ -39,6 +43,7 @@ public class GameTimer : MonoBehaviour
             }
         }
     }
+
     public void AddFouldCost()
     {
         _slider.value += fouldCost;
@@ -54,6 +59,16 @@ public class GameTimer : MonoBehaviour
 
             _lastShakeTime = Time.time;
         }
+    }
+
+    public void PauseTimer()
+    {
+        _isPaused = true;
+    }
+
+    public void ResumeTimer()
+    {
+        _isPaused = false;
     }
 }
 

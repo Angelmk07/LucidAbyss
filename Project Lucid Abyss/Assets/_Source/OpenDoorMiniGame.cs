@@ -17,6 +17,7 @@ public class OpenDoorMiniGame : MonoBehaviour
             camera.transform.parent = minigame;
             camera.transform.localPosition = new Vector3(0, 0, -10);
             SpawnRandomMiniGame();
+            InputListener.CanDo?.Invoke(false);
         }
     }
 
@@ -30,7 +31,6 @@ public class OpenDoorMiniGame : MonoBehaviour
             {
                 miniGames[i].SetActive(false);
             }
-            SpawnRandomMiniGame();
         }
     }
 

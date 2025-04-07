@@ -9,6 +9,7 @@ public class Bootstrapper : MonoBehaviour
     [SerializeField] private ScretchController scretch;
     [SerializeField] private BallSpawner ballSpawner;
     [SerializeField] private LockPickingGame lockPicking;
+    [SerializeField] private InputListener inputListener;
 
     private void Awake()
     {

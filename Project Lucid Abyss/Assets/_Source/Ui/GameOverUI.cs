@@ -10,6 +10,7 @@ public class GameOverUI : MonoBehaviour
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private TMP_Text messageText;
     [SerializeField] private Button restartButton;
+    [SerializeField] private Button continueButton;
     [SerializeField] private Image deathImage;
     [SerializeField] private AudioClip deathSound;
     [SerializeField] private AudioSource audioSource;
@@ -23,6 +24,7 @@ public class GameOverUI : MonoBehaviour
     );
 
     private CanvasGroup gameOverCanvasGroup;
+    private LevelEndTrigger _levelEndTrigger;
 
     private void Awake()
     {
@@ -31,7 +33,6 @@ public class GameOverUI : MonoBehaviour
         messageText.gameObject.SetActive(false);
         messageText.text = "";
         restartButton.gameObject.SetActive(false);
-
         gameOverCanvasGroup = gameOverPanel.GetComponent<CanvasGroup>();
         if (gameOverCanvasGroup == null)
         {
@@ -47,9 +48,13 @@ public class GameOverUI : MonoBehaviour
         gameOverCanvasGroup.alpha = 0f;
         if (deathImage != null) deathImage.gameObject.SetActive(false);
     }
-
+    public void Constructor(LevelEndTrigger levelEndTrigger )
+    {
+        _levelEndTrigger = levelEndTrigger;
+    }
     public void ShowGameOver(string message)
     {
+        continueButton.gameObject.SetActive(_levelEndTrigger.ispass);
         StartCoroutine(ShowGameOverCoroutine(message));
     }
 
@@ -110,5 +115,12 @@ public class GameOverUI : MonoBehaviour
         Time.timeScale = 1f;
         UnityEngine.SceneManagement.SceneManager.LoadScene(
             UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+    }
+    private void Continue()
+    {
+        StopAllCoroutines();
+        Time.timeScale = 1f;
+        int currentSceneIndex = UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex;
+        UnityEngine.SceneManagement.SceneManager.LoadScene(currentSceneIndex + 1);
     }
 }

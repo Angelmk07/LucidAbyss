@@ -15,7 +15,7 @@ public class BalanceSystem : MonoBehaviour
     private GameObject _ball;
     private Rigidbody2D rb;
     private float _stayTimer;
-    private void Start()
+    private void OnEnable()
     {
         StartGame();
     }
@@ -26,7 +26,7 @@ public class BalanceSystem : MonoBehaviour
         if (_ball == null)
         {
             _ball = Instantiate(prefab, startPos.transform.position, Quaternion.identity);
-            _ball.transform.parent = gameObject.transform;
+            //_ball.transform.parent = gameObject.transform;
         }
         if (rb == null)
         {

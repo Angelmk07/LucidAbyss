@@ -5,31 +5,52 @@ public class InputListener : MonoBehaviour
 {
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private InteractionSystem interactionSystem;
-    public Action<bool> CanWalk;
+    public static Action<bool> CanDo;
+
     private bool _canWalk = true;
     private float horizontalInput;
 
     private void Awake()
     {
-
-         playerMovement = GetComponent<PlayerMovement>();
+        playerMovement = GetComponent<PlayerMovement>();
         interactionSystem = GetComponent<InteractionSystem>();
+    }
+
+    private void OnEnable()
+    {
+        CanDo += OnCanDoChanged;
+    }
+
+    private void OnDisable()
+    {
+        CanDo -= OnCanDoChanged;
+    }
+
+    private void OnCanDoChanged(bool result)
+    {
+        _canWalk = result;
+        horizontalInput = 0;
     }
 
     private void Update()
     {
-        CanWalk += (bool result) => _canWalk = result;
-        horizontalInput = Input.GetAxisRaw("Horizontal");
-
-        if (Input.GetKeyDown(KeyCode.E))
+        if (_canWalk)
         {
-            interactionSystem.TryInteract();
+            horizontalInput = Input.GetAxisRaw("Horizontal");
+
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                interactionSystem.TryInteract();
+            }
+        }
+        else
+        {
+            horizontalInput = 0;
         }
     }
 
     private void FixedUpdate()
     {
-        if(_canWalk)
-            playerMovement.Move(horizontalInput);
+        playerMovement.Move(horizontalInput);
     }
 }
