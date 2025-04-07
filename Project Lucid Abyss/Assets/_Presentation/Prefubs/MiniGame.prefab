@@ -49,7 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   key: 32
   Scretchpower: 10
-  ScretchTest: {fileID: 0}
+  isGameActive: 0
 --- !u!114 &5339217193198274106
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65,8 +65,8 @@ MonoBehaviour:
   slider: {fileID: 4736017779117451341}
   image: {fileID: 3314302434335095832}
   timerText: {fileID: 1316710306511874693}
-  successColor: {r: 0.11273074, g: 1, b: 0, a: 0}
-  unSuccessColor: {r: 1, g: 0, b: 0, a: 0}
+  successColor: {r: 0.11273074, g: 1, b: 0, a: 1}
+  unSuccessColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &7965835569197168033
 GameObject:
   m_ObjectHideFlags: 0

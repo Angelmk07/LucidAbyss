@@ -10,14 +10,12 @@ public class BallSpawner : MonoBehaviour
     [SerializeField] private List<Ball> container = null;
     [SerializeField] private float minDistance = 1.2f; 
 
-    private int nextExpectedNumber = 0;
+    private int _nextExpectedNumber = 0;
+    public event System.Action<bool> OnMinigameEnded;
 
-    private void Start()
+    public void StartGame()
     {
-        StartGame();
-    }
-    void StartGame()
-    {
+        
         if (container.Count == 0)
         {
             container = new();
@@ -71,23 +69,33 @@ public class BallSpawner : MonoBehaviour
     }
     public void NotifyBallClicked(Ball ball, int number)
     {
-        if (number == nextExpectedNumber)
+        if (number == _nextExpectedNumber)
         {
-            nextExpectedNumber++;
+            _nextExpectedNumber++;
             ball.Hide();
 
-            if (nextExpectedNumber > count)
+            if (_nextExpectedNumber >= count)
             {
-                EndMinigame();
+                EndMinigame(true);
             }
         }
         else
         {
-            EndMinigame();
+            EndMinigame(false);
             ClearBalls();
-            CreateMinigame();
         }
     }
+    public void EndMinigame(bool success)
+    {
+        foreach (Ball ball in container)
+        {
+            ball.Off();
+        }
+
+        OnMinigameEnded?.Invoke(success);
+    }
+
+
 
     private void ClearBalls()
     {
@@ -96,11 +104,11 @@ public class BallSpawner : MonoBehaviour
             Destroy(ball.gameObject);
         }
         container.Clear();
-        nextExpectedNumber = 0;
+        _nextExpectedNumber = 0;
     }
     void Restart()
     {
-        nextExpectedNumber = 0;
+        _nextExpectedNumber = 0;
         foreach (Ball ball in container)
         {
             ball.Reset();
@@ -109,14 +117,7 @@ public class BallSpawner : MonoBehaviour
     }
 
 
-    public bool EndMinigame()
-    {
-        foreach (Ball ball in container)
-        {
-            ball.Off();
-        }
-        return true;
-    }
+ 
 
     
 

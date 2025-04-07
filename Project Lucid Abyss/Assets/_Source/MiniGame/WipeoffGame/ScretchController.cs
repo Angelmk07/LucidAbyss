@@ -38,16 +38,15 @@ public class ScretchController : MonoBehaviour
         }
         else
         {
-            Debug.LogError("wtf");
+            Debug.LogError("HOW");
         }
     }
 
     private void Update()
     {
-        Debug.Log("Update");
         if (!isGameActive)
             return;
-        Debug.Log("Update then");
+
         if (Input.GetKeyDown(key))
         {
             _view.SliderValue += Scretchpower;
@@ -80,15 +79,18 @@ public class ScretchController : MonoBehaviour
         {
             OnUnSuccess();
             Reset();
-
         }
     }
+
     private void Reset()
     {
+        if (!isGameActive) return; 
         isGameActive = false;
+
         _model.Reset();
         _view.Reset();
     }
+
 
     private void OnSuccess()
     {
