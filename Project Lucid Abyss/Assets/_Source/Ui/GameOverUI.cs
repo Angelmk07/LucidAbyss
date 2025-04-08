@@ -16,7 +16,8 @@ public class GameOverUI : MonoBehaviour
     [SerializeField] private float soundDelay = 1f;
     [SerializeField] private float fadeInDuration = 1f;
     [SerializeField] private float flickerDuration = 2f;
-    [SerializeField] private AnimationCurve flickerCurve = new AnimationCurve(
+    [SerializeField]
+    private AnimationCurve flickerCurve = new AnimationCurve(
         new Keyframe(0f, 0f),
         new Keyframe(0.5f, 1f),
         new Keyframe(1f, 0f)
@@ -29,9 +30,13 @@ public class GameOverUI : MonoBehaviour
     {
         gameOverPanel.SetActive(false);
         restartButton.onClick.AddListener(RestartLevel);
+        continueButton.onClick.AddListener(Continue);
+
         messageText.gameObject.SetActive(false);
         messageText.text = "";
         restartButton.gameObject.SetActive(false);
+        continueButton.gameObject.SetActive(false);
+
         gameOverCanvasGroup = gameOverPanel.GetComponent<CanvasGroup>();
         if (gameOverCanvasGroup == null)
         {
@@ -47,13 +52,17 @@ public class GameOverUI : MonoBehaviour
         gameOverCanvasGroup.alpha = 0f;
         if (deathImage != null) deathImage.gameObject.SetActive(false);
     }
-    public void Constructor(LevelEndTrigger levelEndTrigger )
+
+    public void Constructor(LevelEndTrigger levelEndTrigger)
     {
         _levelEndTrigger = levelEndTrigger;
     }
+
     public void ShowGameOver(string message)
     {
-        continueButton.gameObject.SetActive(_levelEndTrigger.ispass);
+        bool canContinue = _levelEndTrigger != null && _levelEndTrigger.IsPass;
+        continueButton.gameObject.SetActive(canContinue);
+
         StartCoroutine(ShowGameOverCoroutine(message));
     }
 
@@ -62,7 +71,6 @@ public class GameOverUI : MonoBehaviour
         gameOverPanel.SetActive(true);
 
         float timer = 0f;
-
         while (timer < fadeInDuration)
         {
             timer += Time.unscaledDeltaTime;
@@ -73,6 +81,7 @@ public class GameOverUI : MonoBehaviour
         gameOverCanvasGroup.alpha = 1f;
 
         yield return new WaitForSecondsRealtime(soundDelay);
+
         messageText.gameObject.SetActive(true);
         messageText.text = message;
         restartButton.gameObject.SetActive(true);
@@ -115,6 +124,7 @@ public class GameOverUI : MonoBehaviour
         UnityEngine.SceneManagement.SceneManager.LoadScene(
             UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
     }
+
     private void Continue()
     {
         StopAllCoroutines();

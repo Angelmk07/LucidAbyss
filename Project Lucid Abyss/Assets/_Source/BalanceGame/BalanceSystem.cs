@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ public class BalanceSystem : MonoBehaviour
     [SerializeField] private float force = 5f;
     [SerializeField] private float needTostayTime = 2f;
     [SerializeField] private KeyCode key = KeyCode.Space;
+    [SerializeField] private List<OpenDoorMiniGame> miniGameController;
 
     private bool isWin;
     private bool _isStart;
@@ -85,6 +87,20 @@ public class BalanceSystem : MonoBehaviour
             Destroy(_ball);
             _ball = null;
             rb = null;
+        }
+        if (miniGameController.Count != 0)
+        {
+            for (int i = 1; i < miniGameController.Count; i++)
+            {
+                if (miniGameController[i] == null)
+                {
+                    miniGameController[i - 1].DeactivateMiniGame();
+                }
+            }
+        }
+        else
+        {
+            miniGameController[0].DeactivateMiniGame();
         }
 
         text.text = isWin ? "Win" : "Fail";

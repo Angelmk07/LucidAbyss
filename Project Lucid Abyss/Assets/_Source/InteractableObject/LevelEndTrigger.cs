@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class LevelEndTrigger : MonoBehaviour
 {
-    public bool ispass { get; private set; } = false;
+    public bool IsPass { get; private set; } = false;
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
@@ -44,13 +45,13 @@ public class LevelEndTrigger : MonoBehaviour
         if (collectedNormalObjects.Length > 0)
             collectedNormalObjects = collectedNormalObjects.Remove(collectedNormalObjects.Length - 2);
 
+        gameOverUI.Constructor(this);
+
         if (allAnomaliesCollected)
         {
-            ispass = true;
+            IsPass = true;
             Debug.Log("Уровень пройден! Все аномалии собраны.");
             gameOverUI.ShowGameOver("Уровень пройден! Все аномалии собраны.");
-            gameOverUI.Constructor(this);
-
         }
         else
         {

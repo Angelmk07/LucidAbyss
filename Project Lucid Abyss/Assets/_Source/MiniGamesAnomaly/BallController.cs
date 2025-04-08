@@ -1,18 +1,20 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class BallController : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private Vector3 poaitionBall;
     [SerializeField] private bool gravityEnabled = false;
-    private OpenDoorMiniGame miniGameController;
+    [SerializeField] private List<OpenDoorMiniGame> miniGameController;
     private bool gameWon;
     private Camera mainCamera;
 
     void Start()
     {
+        poaitionBall = transform.position;
         mainCamera = Camera.main;
-        miniGameController = FindObjectOfType<OpenDoorMiniGame>();
     }
 
     void Update()
@@ -30,7 +32,16 @@ public class BallController : MonoBehaviour
 
         if (!IsVisibleOnScreen() && !gameWon)
         {
-            miniGameController?.DeactivateMiniGame();
+            if (miniGameController.Count != 0)
+            {
+                for (int i = 0; i < miniGameController.Count; i++)
+                {
+                    if (miniGameController[i] == null)
+                    {
+                        miniGameController[i - 1].DeactivateMiniGame();
+                    }
+                }
+            }
         }
     }
 
@@ -39,11 +50,22 @@ public class BallController : MonoBehaviour
         if (collision.gameObject.CompareTag("Death"))
         {
             Debug.Log("You Died!");
-            miniGameController?.DeactivateMiniGame();
+            transform.position = poaitionBall;
+            if (miniGameController.Count != 0)
+            {
+                for (int i = 0; i < miniGameController.Count; i++)
+                {
+                    if (miniGameController[i] == null)
+                    {
+                        miniGameController[i - 1].DeactivateMiniGame();
+                    }
+                }
+            }
         }
 
         if (collision.gameObject.CompareTag("Finish"))
         {
+            transform.position = poaitionBall;
             WinGame();
         }
     }
@@ -53,7 +75,16 @@ public class BallController : MonoBehaviour
         gameWon = true;
         transform.parent.gameObject.SetActive(false);
         Debug.Log("Игрок провел шарик к цели!");
-        miniGameController?.DeactivateMiniGame();
+        if (miniGameController.Count != 0)
+        {
+            for (int i = 0; i < miniGameController.Count; i++)
+            {
+                if (miniGameController[i] == null)
+                {
+                    miniGameController[i - 1].DeactivateMiniGame();
+                }
+            }
+        }
     }
 
     private bool IsVisibleOnScreen()
