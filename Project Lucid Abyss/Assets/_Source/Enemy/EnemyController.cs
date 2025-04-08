@@ -29,15 +29,28 @@ public class EnemyController : MonoBehaviour
     private void FixedUpdate()
     {
         if (!isSeePlayer)
+        {
             rb.velocity = new Vector2(speed, 0);
+            transform.localScale = new Vector3(1, 1, 1); 
+        }
         else
         {
-            if(transform.position.x < _player?.transform.position.x)
-                rb.velocity = new Vector2(sprint * -1, 0);
-            else
-                rb.velocity = new Vector2(speed, 0);
+            if (_player != null)
+            {
+                if (transform.position.x < _player.transform.position.x)
+                {
+                    rb.velocity = new Vector2(sprint * -1, 0);
+                    transform.localScale = new Vector3(-1, 1, 1); 
+                }
+                else
+                {
+                    rb.velocity = new Vector2(speed, 0);
+                    transform.localScale = new Vector3(1, 1, 1); 
+                }
+            }
         }
     }
+
 
     private void OnTriggerStay2D(Collider2D collision)
     {

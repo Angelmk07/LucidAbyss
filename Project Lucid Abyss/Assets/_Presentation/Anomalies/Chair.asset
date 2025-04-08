@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Chair
   m_EditorClassIdentifier: 
   <Sprite>k__BackingField: {fileID: 0}
-  <AnomalySprite>k__BackingField: {fileID: 0}
+  <AnomalySprite>k__BackingField: {fileID: 21300000, guid: 7684b54aca3e0244db3cf3dcd8b67e38, type: 3}
   <TimeToScretch>k__BackingField: 0
   <NeedPowerMoreThan>k__BackingField: 0
   <CounterForce>k__BackingField: 0

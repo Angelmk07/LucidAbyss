@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Pot of flowers
   m_EditorClassIdentifier: 
   <Sprite>k__BackingField: {fileID: 0}
-  <AnomalySprite>k__BackingField: {fileID: 0}
-  <TimeToScretch>k__BackingField: 0
-  <NeedPowerMoreThan>k__BackingField: 0
-  <CounterForce>k__BackingField: 0
+  <AnomalySprite>k__BackingField: {fileID: 21300000, guid: f537d07f1ffa1e746815d0062beaf5e9, type: 3}
+  <TimeToScretch>k__BackingField: 4
+  <NeedPowerMoreThan>k__BackingField: 65
+  <CounterForce>k__BackingField: 4
   <LvlAccess>k__BackingField: 

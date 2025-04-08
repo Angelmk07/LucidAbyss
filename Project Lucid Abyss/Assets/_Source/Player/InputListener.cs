@@ -53,10 +53,11 @@ public class InputListener : MonoBehaviour
 
     private void FixedUpdate()
     {
-        animator.SetFloat("Speed", horizontalInput);
-        Debug.Log(horizontalInput != 0);
-        animator.SetBool("Move", horizontalInput != 0);
-        Debug.Log(horizontalInput != 0);
+        if(animator != null)
+        {
+            animator.SetFloat("Speed", horizontalInput);
+            animator.SetBool("Move", horizontalInput != 0);
+        }
         playerMovement.Move(horizontalInput);
 
     }

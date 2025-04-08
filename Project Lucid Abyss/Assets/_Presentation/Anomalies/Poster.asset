@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e00ec6d1927f987458d20fe4f35923bb, type: 3}
   m_Name: Poster
   m_EditorClassIdentifier: 
-  <Sprite>k__BackingField: {fileID: 0}
+  <Sprite>k__BackingField: {fileID: 21300000, guid: e6c680689c7d3334aa1b294c6b198d90, type: 3}
   <AnomalySprite>k__BackingField: {fileID: 0}
   <TimeToScretch>k__BackingField: 0
   <NeedPowerMoreThan>k__BackingField: 0

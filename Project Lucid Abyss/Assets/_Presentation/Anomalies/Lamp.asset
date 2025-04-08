@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Lamp
   m_EditorClassIdentifier: 
   <Sprite>k__BackingField: {fileID: 0}
-  <AnomalySprite>k__BackingField: {fileID: 0}
+  <AnomalySprite>k__BackingField: {fileID: 21300000, guid: 508c53cca61556849bb9a4936114203e, type: 3}
   <TimeToScretch>k__BackingField: 0
   <NeedPowerMoreThan>k__BackingField: 0
   <CounterForce>k__BackingField: 0

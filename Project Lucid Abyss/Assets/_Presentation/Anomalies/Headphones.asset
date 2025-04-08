@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Headphones
   m_EditorClassIdentifier: 
   <Sprite>k__BackingField: {fileID: 0}
-  <AnomalySprite>k__BackingField: {fileID: 0}
+  <AnomalySprite>k__BackingField: {fileID: 21300000, guid: 0bee62ceaa8cad344a7a37ddcf5a5320, type: 3}
   <TimeToScretch>k__BackingField: 0
   <NeedPowerMoreThan>k__BackingField: 0
   <CounterForce>k__BackingField: 0

@@ -2,10 +2,11 @@ using UnityEngine;
 
 public class InteractableObject : MonoBehaviour
 {
-    [field:SerializeField] public AnomalySO AnomalyInfo { get; private set; }
+    [field: SerializeField] public AnomalySO AnomalyInfo { get; private set; }
     [SerializeField] private bool isAnomaly = false;
     [SerializeField] private Color normalColor = Color.white;
     [SerializeField] private Color anomalyColor = Color.red;
+
     private SpriteRenderer spriteRenderer;
 
     public bool IsAnomaly => isAnomaly;
@@ -14,7 +15,7 @@ public class InteractableObject : MonoBehaviour
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        UpdateColor();
+        ApplyAppearance();
     }
 
     private void OnValidate()
@@ -23,17 +24,19 @@ public class InteractableObject : MonoBehaviour
             spriteRenderer = GetComponent<SpriteRenderer>();
 
         if (spriteRenderer != null)
-            UpdateColor();
+            ApplyAppearance();
     }
 
-   
-
-    private void UpdateColor()
+    private void ApplyAppearance()
     {
-        if (spriteRenderer != null)
+        if (spriteRenderer == null) return;
+
+        if (isAnomaly && AnomalyInfo != null && AnomalyInfo.AnomalySprite != null)
         {
-            spriteRenderer.color = isAnomaly ? anomalyColor : normalColor;
+            spriteRenderer.sprite = AnomalyInfo.AnomalySprite;
         }
+
+        spriteRenderer.color = isAnomaly ? anomalyColor : normalColor;
     }
 
     public void Collect()

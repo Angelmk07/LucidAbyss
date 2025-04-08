@@ -19,6 +19,7 @@ public class InteractionSystem : MonoBehaviour
 
     [Header("Interaction Settings")]
     [SerializeField] private float interactionRange = 1.5f;
+    [SerializeField] private float high = 1.5f;
     [SerializeField] private LayerMask interactableLayer;
     [SerializeField] private float promptHeight = 1.5f;
     [SerializeField] private float fadeSpeed = 5f;
@@ -67,7 +68,7 @@ public class InteractionSystem : MonoBehaviour
     //Метод для создание области проверки на объект
     private void CheckNearbyObjects()
     {
-        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, interactionRange, interactableLayer);
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position+(Vector3)new Vector2(0, high), interactionRange, interactableLayer);
         hasNearbyObject = false;
         currentNearbyObject = null;
 
@@ -241,7 +242,7 @@ public class InteractionSystem : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, interactionRange);
+        Gizmos.DrawWireSphere(transform.position + (Vector3)new Vector2(0, high), interactionRange);
     }
 }
 public enum MiniGameType
