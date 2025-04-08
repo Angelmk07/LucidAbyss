@@ -4,6 +4,7 @@ using UnityEngine;
 public class EnemyTrigger : MonoBehaviour
 {
     [SerializeField] private int enemyLifeTime;
+    [SerializeField] private float spawnDelay;
     [SerializeField] private LayerMask playerLayrMask;
     [SerializeField] private GameObject tiger;
     [SerializeField] private GameTimer timer;
@@ -19,16 +20,18 @@ public class EnemyTrigger : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.layer == _playerLayer && !tiger.activeInHierarchy && !isSpawned)
-            StartCoroutine(EnemyLifeTime());
+            StartCoroutine(EnemySpawnSequence());
     }
 
-    private IEnumerator EnemyLifeTime()
+    private IEnumerator EnemySpawnSequence()
     {
+        isSpawned = true;
+        yield return new WaitForSeconds(spawnDelay);
         tiger.SetActive(true);
         timer.Stop();
-        isSpawned = true;
         yield return new WaitForSeconds(enemyLifeTime);
         tiger.SetActive(false);
         timer.Continue();
+        isSpawned = false;
     }
 }
